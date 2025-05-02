@@ -1,4 +1,6 @@
-﻿namespace AdventureWorksCore.Models;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace AdventureWorksCore.Models;
 
 /// <summary>
 /// Employee information such as salary, department, and title.
@@ -23,7 +25,7 @@ public partial class Employee
     /// <summary>
     /// The node of the employee.
     /// </summary>
-    public int? OrganizationNode { get; set; }
+    public HierarchyId? OrganizationNode { get; set; }
 
     /// <summary>
     /// The depth of the employee in the corporate hierarchy.

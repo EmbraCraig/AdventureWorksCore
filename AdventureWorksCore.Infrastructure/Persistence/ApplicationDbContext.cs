@@ -651,7 +651,7 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(e => e.AccountNumber)
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasComputedColumnSql("(isnull('AW'+[dbo].[ufnLeadingZeros]([CustomerID]),''))", false)
+                // .HasComputedColumnSql("(isnull('AW'+[dbo].[ufnLeadingZeros]([CustomerID]),''))", false)
                 .HasComment("Unique number identifying the customer assigned by the accounting system.");
             entity.Property(e => e.ModifiedDate)
                 .HasDefaultValueSql("(getdate())")
@@ -1041,15 +1041,15 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
 
             entity.HasIndex(e => new { e.LastName, e.FirstName, e.MiddleName }, "IX_Person_LastName_FirstName_MiddleName");
 
-            entity.HasIndex(e => e.AdditionalContactInfo, "PXML_Person_AddContact");
+            // entity.HasIndex(e => e.AdditionalContactInfo, "PXML_Person_AddContact");
 
-            entity.HasIndex(e => e.Demographics, "PXML_Person_Demographics");
+            // entity.HasIndex(e => e.Demographics, "PXML_Person_Demographics");
 
-            entity.HasIndex(e => e.Demographics, "XMLPATH_Person_Demographics");
+            // entity.HasIndex(e => e.Demographics, "XMLPATH_Person_Demographics");
 
-            entity.HasIndex(e => e.Demographics, "XMLPROPERTY_Person_Demographics");
+            // entity.HasIndex(e => e.Demographics, "XMLPROPERTY_Person_Demographics");
 
-            entity.HasIndex(e => e.Demographics, "XMLVALUE_Person_Demographics");
+            // entity.HasIndex(e => e.Demographics, "XMLVALUE_Person_Demographics");
 
             entity.Property(e => e.BusinessEntityId)
                 .ValueGeneratedNever()
@@ -1420,9 +1420,9 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
 
             entity.HasIndex(e => e.Rowguid, "AK_ProductModel_rowguid").IsUnique();
 
-            entity.HasIndex(e => e.CatalogDescription, "PXML_ProductModel_CatalogDescription");
+            // entity.HasIndex(e => e.CatalogDescription, "PXML_ProductModel_CatalogDescription");
 
-            entity.HasIndex(e => e.Instructions, "PXML_ProductModel_Instructions");
+            // entity.HasIndex(e => e.Instructions, "PXML_ProductModel_Instructions");
 
             entity.Property(e => e.ProductModelId)
                 .HasComment("Primary key for ProductModel records.")
@@ -2485,7 +2485,7 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
 
             entity.HasIndex(e => e.SalesPersonId, "IX_Store_SalesPersonID");
 
-            entity.HasIndex(e => e.Demographics, "PXML_Store_Demographics");
+            // entity.HasIndex(e => e.Demographics, "PXML_Store_Demographics");
 
             entity.Property(e => e.BusinessEntityId)
                 .ValueGeneratedNever()
