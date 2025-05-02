@@ -5,12 +5,12 @@ using AdventureWorksCore.E2eTests.Shared.WebApplicationFactory;
 using FluentAssertions;
 using Xunit.Abstractions;
 
-namespace AdventureWorksCore.E2eTests.Projects;
+namespace AdventureWorksCore.E2eTests.Products;
 
 [Collection(CustomWebApplicationCollection.Name)]
-public class ProjectE2eTests : TestBase
+public class ProductE2eTests : TestBase
 {
-    public ProjectE2eTests(
+    public ProductE2eTests(
         CustomWebApplicationFixture webApplicationFixture,
         ITestOutputHelper testOutputHelper) :
         base(webApplicationFixture, testOutputHelper)
@@ -20,7 +20,7 @@ public class ProjectE2eTests : TestBase
     [Fact]
     public async Task ShouldReturnCreatedProductById()
     {
-        var createResponse = await HttpClient.CreateProduct().Call(new() { Name = "Expected name" });
+        var createResponse = await HttpClient.CreateProduct().Call(new() { Name = "Expected name", ProductNumber = Guid.NewGuid().ToString().Substring(0, 8) });
 
         await createResponse.Should().HaveStatusCode(201);
 
@@ -38,8 +38,8 @@ public class ProjectE2eTests : TestBase
     [Fact]
     public async Task ShouldListCreatedProducts()
     {
-        var product1Id = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 1" });
-        var product2Id = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 2" });
+        var product1Id = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 1", ProductNumber = Guid.NewGuid().ToString().Substring(0, 8) });
+        var product2Id = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 2", ProductNumber = Guid.NewGuid().ToString().Substring(0, 8) });
 
         var listProductsResults = await HttpClient.ListProducts().CallAndParseResponse(new()
         {
@@ -55,7 +55,7 @@ public class ProjectE2eTests : TestBase
     [Fact]
     public async Task ShouldUpdateProduct()
     {
-        var productId = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 1" });
+        var productId = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 1", ProductNumber = Guid.NewGuid().ToString().Substring(0, 8) });
 
         var updateResponse = await HttpClient.UpdateProduct().Call(new() { Id = productId, Name = "Updated name" });
 
@@ -69,8 +69,8 @@ public class ProjectE2eTests : TestBase
     [Fact]
     public async Task ShouldDeleteProduct()
     {
-        var productId1 = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 1" });
-        var productId2 = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 2" });
+        var productId1 = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 1", ProductNumber = Guid.NewGuid().ToString().Substring(0, 8) });
+        var productId2 = await HttpClient.CreateProduct().CallAndParseResponse(new() { Name = "Name 2", ProductNumber = Guid.NewGuid().ToString().Substring(0, 8) });
 
         var deleteProductResponse = await HttpClient.DeleteProduct().Call(productId1);
 

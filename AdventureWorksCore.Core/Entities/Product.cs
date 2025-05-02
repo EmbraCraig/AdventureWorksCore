@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdventureWorksCore.Models;
+﻿namespace AdventureWorksCore.Models;
 
 /// <summary>
 /// Products sold or used in the manfacturing of sold products.
@@ -41,12 +38,12 @@ public partial class Product
     /// <summary>
     /// Minimum inventory quantity. 
     /// </summary>
-    public short SafetyStockLevel { get; set; }
+    public short SafetyStockLevel { get; set; } = 1;
 
     /// <summary>
     /// Inventory level that triggers a purchase order or work order. 
     /// </summary>
-    public short ReorderPoint { get; set; }
+    public short ReorderPoint { get; set; } = 1;
 
     /// <summary>
     /// Standard cost of the product.
@@ -76,7 +73,7 @@ public partial class Product
     /// <summary>
     /// Product weight.
     /// </summary>
-    public decimal? Weight { get; set; }
+    public decimal? Weight { get; set; } = 1.0m;
 
     /// <summary>
     /// Number of days required to manufacture the product.

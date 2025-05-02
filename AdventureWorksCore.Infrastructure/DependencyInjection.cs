@@ -20,13 +20,16 @@ public static class DependencyInjection
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
+        {
             options.UseSqlServer(
                 configuration.GetConnectionString("SqlServer"),
                 builder =>
                 {
                     builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
                     builder.UseHierarchyId();
-                }));
+                });
+            options.EnableSensitiveDataLogging();
+        });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
     }

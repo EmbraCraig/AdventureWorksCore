@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Respawn;
 using Respawn.Graph;
 
@@ -12,6 +13,15 @@ namespace AdventureWorksCore.E2eTests.Shared.WebApplicationFactory;
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     private Checkpoint _checkpoint = null!;
+    private readonly Mock<IDateTimeService> _dateTimeServiceMock;
+    public DateTime? MockedCurrentDateTime { get; set; }
+
+    public CustomWebApplicationFactory()
+    {
+        _dateTimeServiceMock = new Mock<IDateTimeService>();
+        _dateTimeServiceMock.Setup(_ => _.Now)
+            .Returns(() => MockedCurrentDateTime ?? DateTime.UtcNow);
+    }
 
     public async Task ResetState()
     {
@@ -34,7 +44,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.ConfigureServices((context, services) =>
         {
-            services.ReplaceServiceWithMock<IDateTimeService>();
+            services.RemoveServiceOfType<IDateTimeService>();
+
+            services.AddSingleton(_dateTimeServiceMock.Object);
         });
 
         _checkpoint = new Checkpoint
