@@ -1,7 +1,9 @@
 using AdventureWorksCore.Application.Common.Interfaces;
 using AdventureWorksCore.E2eTests.Shared.Extensions;
+using AdventureWorksCore.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -45,17 +47,23 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureServices((context, services) =>
         {
             services.RemoveServiceOfType<IDateTimeService>();
-
             services.AddSingleton(_dateTimeServiceMock.Object);
         });
 
+        base.ConfigureWebHost(builder);
+    }
+
+    public async Task InitializeDatabaseAndCheckpointAsync()
+    {
+        using var scope = Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.EnsureDeletedAsync();
+        await dbContext.Database.MigrateAsync();
+
         _checkpoint = new Checkpoint
         {
-            TablesToIgnore = new[] {
-               new Table("__EFMigrationsHistory"),
-            },
+            TablesToIgnore = [new Table("__EFMigrationsHistory"),
+            new Table("UnitMeasure")],
         };
-
-        base.ConfigureWebHost(builder);
     }
 }

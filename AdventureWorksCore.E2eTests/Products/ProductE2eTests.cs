@@ -83,28 +83,44 @@ public class ProductE2eTests : TestBase
     {
         var product1Command = new CreateProductDto
         {
-            Name = "Name 1",
+            Name = "Expected name 1",
             ProductNumber = Guid.NewGuid().ToString().Substring(0, 8),
             MakeFlag = true,
             FinishedGoodsFlag = true,
-            Color = "Blue",
+            Color = "Red",
             SafetyStockLevel = 10,
             ReorderPoint = 5,
             StandardCost = 100.00m,
-            ListPrice = 150.00m
+            ListPrice = 150.00m,
+            Size = "M",
+            SizeUnitMeasureCode = "CM",
+            WeightUnitMeasureCode = "KG",
+            Weight = 1.5m,
+            DaysToManufacture = 2,
+            ProductLine = "R",
+            Class = "H",
+            Style = "M"
         };
 
         var product2Command = new CreateProductDto
         {
-            Name = "Name 2",
+            Name = "Expected name 2",
             ProductNumber = Guid.NewGuid().ToString().Substring(0, 8),
-            MakeFlag = false,
+            MakeFlag = true,
             FinishedGoodsFlag = true,
-            Color = "Green",
-            SafetyStockLevel = 15,
-            ReorderPoint = 8,
-            StandardCost = 200.00m,
-            ListPrice = 300.00m
+            Color = "Red",
+            SafetyStockLevel = 10,
+            ReorderPoint = 5,
+            StandardCost = 100.00m,
+            ListPrice = 150.00m,
+            Size = "M",
+            SizeUnitMeasureCode = "CM",
+            WeightUnitMeasureCode = "KG",
+            Weight = 1.5m,
+            DaysToManufacture = 2,
+            ProductLine = "R",
+            Class = "H",
+            Style = "M"
         };
 
         var product1Id = await HttpClient.CreateProduct().CallAndParseResponse(product1Command);
@@ -129,8 +145,16 @@ public class ProductE2eTests : TestBase
             ReorderPoint = product1Command.ReorderPoint,
             StandardCost = product1Command.StandardCost,
             ListPrice = product1Command.ListPrice,
+            Size = product1Command.Size,
+            SizeUnitMeasureCode = product1Command.SizeUnitMeasureCode,
+            WeightUnitMeasureCode = product1Command.WeightUnitMeasureCode,
+            Weight = product1Command.Weight,
             ProductReviews = [],
-            ProductPhotos = []
+            ProductPhotos = [],
+            DaysToManufacture = product1Command.DaysToManufacture,
+            ProductLine = product1Command.ProductLine,
+            Class = product1Command.Class,
+            Style = product1Command.Style,
         }, options => options.Excluding(p => p.SellStartDate).Excluding(p => p.ModifiedDate));
 
         listProductsResults.Items[1].Should().BeEquivalentTo(new ProductDto
@@ -145,8 +169,16 @@ public class ProductE2eTests : TestBase
             ReorderPoint = product2Command.ReorderPoint,
             StandardCost = product2Command.StandardCost,
             ListPrice = product2Command.ListPrice,
+            Size = product2Command.Size,
+            SizeUnitMeasureCode = product2Command.SizeUnitMeasureCode,
+            WeightUnitMeasureCode = product2Command.WeightUnitMeasureCode,
+            Weight = product2Command.Weight,
             ProductReviews = [],
-            ProductPhotos = []
+            ProductPhotos = [],
+            DaysToManufacture = product2Command.DaysToManufacture,
+            ProductLine = product2Command.ProductLine,
+            Class = product2Command.Class,
+            Style = product2Command.Style,
         }, options => options.Excluding(p => p.SellStartDate).Excluding(p => p.ModifiedDate));
     }
 
@@ -155,7 +187,7 @@ public class ProductE2eTests : TestBase
     {
         var createCommand = new CreateProductDto
         {
-            Name = "Name 1",
+            Name = "Expected name 2",
             ProductNumber = Guid.NewGuid().ToString().Substring(0, 8),
             MakeFlag = true,
             FinishedGoodsFlag = true,
@@ -163,7 +195,15 @@ public class ProductE2eTests : TestBase
             SafetyStockLevel = 10,
             ReorderPoint = 5,
             StandardCost = 100.00m,
-            ListPrice = 150.00m
+            ListPrice = 150.00m,
+            Size = "M",
+            SizeUnitMeasureCode = "CM",
+            WeightUnitMeasureCode = "KG",
+            Weight = 1.5m,
+            DaysToManufacture = 2,
+            ProductLine = "R",
+            Class = "H",
+            Style = "M"
         };
 
         var productId = await HttpClient.CreateProduct().CallAndParseResponse(createCommand);
@@ -181,14 +221,14 @@ public class ProductE2eTests : TestBase
             StandardCost = 200.00m,
             ListPrice = 300.00m,
             Size = "L",
-            SizeUnitMeasureCode = "CM",
-            WeightUnitMeasureCode = "KG",
+            SizeUnitMeasureCode = "IN",
+            WeightUnitMeasureCode = "LB",
             Weight = 2.0m,
             DaysToManufacture = 3,
             ProductLine = "M",
             Class = "M",
             Style = "U",
-            SellEndDate = DateTime.UtcNow.AddDays(30)
+            SellEndDate = new DateTime(2026, 12, 31),
         };
 
         var updateResponse = await HttpClient.UpdateProduct().Call(updateCommand);
@@ -228,7 +268,7 @@ public class ProductE2eTests : TestBase
     {
         var product1Command = new CreateProductDto
         {
-            Name = "Name 1",
+            Name = "Expected name 1",
             ProductNumber = Guid.NewGuid().ToString().Substring(0, 8),
             MakeFlag = true,
             FinishedGoodsFlag = true,
@@ -236,20 +276,36 @@ public class ProductE2eTests : TestBase
             SafetyStockLevel = 10,
             ReorderPoint = 5,
             StandardCost = 100.00m,
-            ListPrice = 150.00m
+            ListPrice = 150.00m,
+            Size = "M",
+            SizeUnitMeasureCode = "CM",
+            WeightUnitMeasureCode = "KG",
+            Weight = 1.5m,
+            DaysToManufacture = 2,
+            ProductLine = "R",
+            Class = "H",
+            Style = "M"
         };
 
         var product2Command = new CreateProductDto
         {
-            Name = "Name 2",
+            Name = "Expected name 2",
             ProductNumber = Guid.NewGuid().ToString().Substring(0, 8),
-            MakeFlag = false,
+            MakeFlag = true,
             FinishedGoodsFlag = true,
-            Color = "Green",
-            SafetyStockLevel = 15,
-            ReorderPoint = 8,
-            StandardCost = 200.00m,
-            ListPrice = 300.00m
+            Color = "Red",
+            SafetyStockLevel = 10,
+            ReorderPoint = 5,
+            StandardCost = 100.00m,
+            ListPrice = 150.00m,
+            Size = "M",
+            SizeUnitMeasureCode = "CM",
+            WeightUnitMeasureCode = "KG",
+            Weight = 1.5m,
+            DaysToManufacture = 2,
+            ProductLine = "R",
+            Class = "H",
+            Style = "M"
         };
 
         var productId1 = await HttpClient.CreateProduct().CallAndParseResponse(product1Command);
@@ -278,8 +334,16 @@ public class ProductE2eTests : TestBase
             ReorderPoint = product2Command.ReorderPoint,
             StandardCost = product2Command.StandardCost,
             ListPrice = product2Command.ListPrice,
+            Size = product2Command.Size,
+            SizeUnitMeasureCode = product2Command.SizeUnitMeasureCode,
+            WeightUnitMeasureCode = product2Command.WeightUnitMeasureCode,
+            Weight = product2Command.Weight,
             ProductReviews = [],
-            ProductPhotos = []
+            ProductPhotos = [],
+            DaysToManufacture = product2Command.DaysToManufacture,
+            ProductLine = product2Command.ProductLine,
+            Class = product2Command.Class,
+            Style = product2Command.Style,
         }, options => options.Excluding(p => p.SellStartDate).Excluding(p => p.ModifiedDate));
     }
 }
