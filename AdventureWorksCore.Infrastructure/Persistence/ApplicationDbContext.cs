@@ -2620,6 +2620,47 @@ public partial class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasComment("Unit of measure description.");
+
+            entity.HasData(
+                new UnitMeasure { UnitMeasureCode = "BOX", Name = "Boxes", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "BTL", Name = "Bottle", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "C", Name = "Celsius", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CAN", Name = "Canister", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CAR", Name = "Carton", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CBM", Name = "Cubic meters", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CCM", Name = "Cubic centimeter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CDM", Name = "Cubic decimeter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CM", Name = "Centimeter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CM2", Name = "Square centimeter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CR", Name = "Crate", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CS", Name = "Case", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "CTN", Name = "Container", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "DM", Name = "Decimeter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "DZ", Name = "Dozen", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "EA", Name = "Each", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "FT3", Name = "Cubic foot", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "G", Name = "Gram", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "GAL", Name = "Gallon", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "IN", Name = "Inch", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "KG", Name = "Kilogram", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "KGV", Name = "Kilogram/cubic meter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "KM", Name = "Kilometer", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "KT", Name = "Kiloton", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "L", Name = "Liter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "LB", Name = "US pound", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "M", Name = "Meter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "M2", Name = "Square meter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "M3", Name = "Cubic meter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "MG", Name = "Milligram", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "ML", Name = "Milliliter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "MM", Name = "Millimeter", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "OZ", Name = "Ounces", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "PAK", Name = "Pack", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "PAL", Name = "Pallet", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "PC", Name = "Piece", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "PCT", Name = "Percentage", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) },
+                new UnitMeasure { UnitMeasureCode = "PT", Name = "Pint, US liquid", ModifiedDate = new DateTime(2008, 4, 30, 0, 0, 0, DateTimeKind.Utc) }
+            );
         });
 
         modelBuilder.Entity<VAdditionalContactInfo>(entity =>
