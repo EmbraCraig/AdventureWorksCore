@@ -3,6 +3,7 @@ using AdventureWorksCore.Application.Common.AppRequests.Pagination;
 using AdventureWorksCore.Application.Common.Interfaces;
 using AdventureWorksCore.Application.Projects.Dtos;
 using AdventureWorksCore.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksCore.Application.Projects.Queries.List;
 
@@ -37,7 +38,21 @@ public class ListProductsQueryHandler : IRequestHandler<ListProductsQuery, Pagin
 
     private IQueryable<Product> BuildQueryable(ListProductsQuery query)
     {
-        var queryable = _dbContext.Products;
+        var queryable = _dbContext.Products
+            .Include(x => x.ProductModel)
+            .Include(x => x.ProductSubcategory)
+            .Include(x => x.ProductReviews)
+            .Include(x => x.BillOfMaterialComponents)
+            .Include(x => x.BillOfMaterialProductAssemblies)
+            .Include(x => x.ProductCostHistories)
+            .Include(x => x.ProductInventories)
+            .Include(x => x.ProductListPriceHistories)
+            .Include(x => x.ProductVendors).ThenInclude(pv => pv.BusinessEntity)
+            .Include(x => x.ProductVendors).ThenInclude(pv => pv.UnitMeasureCodeNavigation)
+            .Include(x => x.PurchaseOrderDetails).ThenInclude(pod => pod.PurchaseOrder)
+            .Include(x => x.WorkOrders).ThenInclude(wo => wo.ScrapReason)
+            .Include(x => x.WorkOrders).ThenInclude(wo => wo.WorkOrderRoutings).ThenInclude(wor => wor.Location)
+            .Include(x => x.ProductProductPhotos).ThenInclude(ppp => ppp.ProductPhoto);
 
         return queryable;
     }
