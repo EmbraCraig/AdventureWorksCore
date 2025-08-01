@@ -45,7 +45,7 @@ public class ListProductsQueryHandler : IRequestHandler<ListProductsQuery, Pagin
             .Include(x => x.BillOfMaterialComponents)
             .Include(x => x.BillOfMaterialProductAssemblies)
             .Include(x => x.ProductCostHistories)
-            .Include(x => x.ProductInventories)
+            .Include(x => x.ProductInventories).ThenInclude(pi => pi.Location)
             .Include(x => x.ProductListPriceHistories)
             .Include(x => x.ProductVendors).ThenInclude(pv => pv.BusinessEntity)
             .Include(x => x.ProductVendors).ThenInclude(pv => pv.UnitMeasureCodeNavigation)

@@ -179,7 +179,7 @@ public record BillOfMaterialDto
     public short Bomlevel { get; init; }
     public decimal PerAssemblyQty { get; init; }
     public DateTime ModifiedDate { get; init; }
-    public SubProductDto Component { get; init; } = null!;
+    public SubProductDto? Component { get; init; } = null!;
     public SubProductDto? ProductAssembly { get; init; }
 
     public static BillOfMaterialDto MapFromEntity(BillOfMaterial entity)
@@ -196,7 +196,7 @@ public record BillOfMaterialDto
             Bomlevel = entity.Bomlevel,
             PerAssemblyQty = entity.PerAssemblyQty,
             ModifiedDate = entity.ModifiedDate,
-            Component = new SubProductDto { Id = entity.Component.ProductId, Name = entity.Component.Name },
+            Component = entity.Component != null ? new SubProductDto { Id = entity.Component.ProductId, Name = entity.Component.Name } : null,
             ProductAssembly = entity.ProductAssembly != null ? new SubProductDto { Id = entity.ProductAssembly.ProductId, Name = entity.ProductAssembly.Name } : null
         };
     }

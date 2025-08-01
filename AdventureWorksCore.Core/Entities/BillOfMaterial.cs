@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdventureWorksCore.Models;
+﻿namespace AdventureWorksCore.Models;
 
 /// <summary>
 /// Items required to make bicycles and bicycle subassemblies. It identifies the heirarchical relationship between a parent product and its components.
@@ -53,7 +50,7 @@ public partial class BillOfMaterial
     /// </summary>
     public DateTime ModifiedDate { get; set; }
 
-    public virtual Product Component { get; set; } = null!;
+    public virtual Product? Component { get; set; }
 
     public virtual Product? ProductAssembly { get; set; }
 
