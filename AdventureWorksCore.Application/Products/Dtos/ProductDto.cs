@@ -31,6 +31,8 @@ public record ProductDto
     public ICollection<ProductReviewDto> ProductReviews { get; init; } = [];
     public ICollection<ProductPhotoDto> ProductPhotos { get; init; } = [];
     public ICollection<BillOfMaterialDto> BillOfMaterialComponents { get; init; } = [];
+    public ICollection<BillOfMaterialDto> BillOfMaterialProductAssemblies { get; init; } = [];
+    public ICollection<ProductCostHistoryDto> ProductCostHistories { get; init; } = [];
 
     public static ProductDto MapFromEntity(Product entity)
     {
@@ -62,7 +64,9 @@ public record ProductDto
             ProductSubcategory = entity.ProductSubcategory != null ? ProductSubcategoryDto.MapFromEntity(entity.ProductSubcategory) : null,
             ProductReviews = [.. entity.ProductReviews.Select(ProductReviewDto.MapFromEntity)],
             ProductPhotos = [.. entity.ProductProductPhotos.Select(ppp => ProductPhotoDto.MapFromEntity(ppp.ProductPhoto))],
-            BillOfMaterialComponents = [.. entity.BillOfMaterialComponents.Select(BillOfMaterialDto.MapFromEntity)]
+            BillOfMaterialComponents = [.. entity.BillOfMaterialComponents.Select(BillOfMaterialDto.MapFromEntity)],
+            BillOfMaterialProductAssemblies = [.. entity.BillOfMaterialProductAssemblies.Select(BillOfMaterialDto.MapFromEntity)],
+            ProductCostHistories = [.. entity.ProductCostHistories.Select(ProductCostHistoryDto.MapFromEntity)]
         };
     }
 }
@@ -192,6 +196,27 @@ public record SubProductDto
 {
     public int Id { get; init; }
     public string Name { get; init; } = null!;
+}
+
+public record ProductCostHistoryDto
+{
+    public int ProductId { get; init; }
+    public DateTime StartDate { get; init; }
+    public DateTime? EndDate { get; init; }
+    public decimal StandardCost { get; init; }
+    public DateTime ModifiedDate { get; init; }
+
+    public static ProductCostHistoryDto MapFromEntity(ProductCostHistory entity)
+    {
+        return new()
+        {
+            ProductId = entity.ProductId,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            StandardCost = entity.StandardCost,
+            ModifiedDate = entity.ModifiedDate
+        };
+    }
 }
 
 

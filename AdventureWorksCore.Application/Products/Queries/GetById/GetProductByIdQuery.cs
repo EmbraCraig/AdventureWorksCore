@@ -27,6 +27,9 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
             .Include(_ => _.ProductModel)
             .Include(_ => _.ProductSubcategory)
             .Include(_ => _.ProductReviews)
+            .Include(_ => _.BillOfMaterialComponents)
+            .Include(_ => _.BillOfMaterialProductAssemblies)
+            .Include(_ => _.ProductCostHistories)
             .FirstOrDefaultAsync(_ => _.ProductId == query.ProductId, cancellationToken);
 
         if (entity == null)
