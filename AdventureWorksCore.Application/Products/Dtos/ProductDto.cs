@@ -30,6 +30,7 @@ public record ProductDto
     public ProductSubcategoryDto? ProductSubcategory { get; init; }
     public ICollection<ProductReviewDto> ProductReviews { get; init; } = [];
     public ICollection<ProductPhotoDto> ProductPhotos { get; init; } = [];
+    public ICollection<BillOfMaterialDto> BillOfMaterialComponents { get; init; } = [];
 
     public static ProductDto MapFromEntity(Product entity)
     {
@@ -60,7 +61,8 @@ public record ProductDto
             ProductModel = entity.ProductModel != null ? ProductModelDto.MapFromEntity(entity.ProductModel) : null,
             ProductSubcategory = entity.ProductSubcategory != null ? ProductSubcategoryDto.MapFromEntity(entity.ProductSubcategory) : null,
             ProductReviews = [.. entity.ProductReviews.Select(ProductReviewDto.MapFromEntity)],
-            ProductPhotos = [.. entity.ProductProductPhotos.Select(ppp => ProductPhotoDto.MapFromEntity(ppp.ProductPhoto))]
+            ProductPhotos = [.. entity.ProductProductPhotos.Select(ppp => ProductPhotoDto.MapFromEntity(ppp.ProductPhoto))],
+            BillOfMaterialComponents = [.. entity.BillOfMaterialComponents.Select(BillOfMaterialDto.MapFromEntity)]
         };
     }
 }
@@ -165,6 +167,25 @@ public record BillOfMaterialDto
     public DateTime ModifiedDate { get; init; }
     public SubProductDto Component { get; init; } = null!;
     public SubProductDto? ProductAssembly { get; init; }
+
+    public static BillOfMaterialDto MapFromEntity(BillOfMaterial entity)
+    {
+        return new()
+        {
+            BillOfMaterialsId = entity.BillOfMaterialsId,
+            ProductAssemblyId = entity.ProductAssemblyId,
+            ComponentId = entity.ComponentId,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            UnitMeasureCode = entity.UnitMeasureCode,
+            UnitMeasureName = entity.UnitMeasureCodeNavigation?.Name,
+            Bomlevel = entity.Bomlevel,
+            PerAssemblyQty = entity.PerAssemblyQty,
+            ModifiedDate = entity.ModifiedDate,
+            Component = new SubProductDto { Id = entity.Component.ProductId, Name = entity.Component.Name },
+            ProductAssembly = entity.ProductAssembly != null ? new SubProductDto { Id = entity.ProductAssembly.ProductId, Name = entity.ProductAssembly.Name } : null
+        };
+    }
 }
 
 public record SubProductDto

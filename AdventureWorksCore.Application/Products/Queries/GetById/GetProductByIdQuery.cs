@@ -24,6 +24,9 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
         CancellationToken cancellationToken)
     {
         var entity = await _dbContext.Products
+            .Include(_ => _.ProductModel)
+            .Include(_ => _.ProductSubcategory)
+            .Include(_ => _.ProductReviews)
             .FirstOrDefaultAsync(_ => _.ProductId == query.ProductId, cancellationToken);
 
         if (entity == null)
