@@ -37,6 +37,7 @@ public record ProductDto
     public ICollection<ProductListPriceHistoryDto> ProductListPriceHistories { get; init; } = [];
     public ICollection<ProductVendorDto> ProductVendors { get; init; } = [];
     public ICollection<PurchaseOrderDetailDto> PurchaseOrderDetails { get; init; } = [];
+    public ICollection<WorkOrderDto> WorkOrders { get; init; } = [];
 
     public static ProductDto MapFromEntity(Product entity)
     {
@@ -74,7 +75,8 @@ public record ProductDto
             ProductInventories = [.. entity.ProductInventories.Select(ProductInventoryDto.MapFromEntity)],
             ProductListPriceHistories = [.. entity.ProductListPriceHistories.Select(ProductListPriceHistoryDto.MapFromEntity)],
             ProductVendors = [.. entity.ProductVendors.Select(ProductVendorDto.MapFromEntity)],
-            PurchaseOrderDetails = [.. entity.PurchaseOrderDetails.Select(PurchaseOrderDetailDto.MapFromEntity)]
+            PurchaseOrderDetails = [.. entity.PurchaseOrderDetails.Select(PurchaseOrderDetailDto.MapFromEntity)],
+            WorkOrders = [.. entity.WorkOrders.Select(WorkOrderDto.MapFromEntity)]
         };
     }
 }
@@ -406,6 +408,78 @@ public record PurchaseOrderHeaderDto
             TaxAmt = entity.TaxAmt,
             Freight = entity.Freight,
             TotalDue = entity.TotalDue,
+            ModifiedDate = entity.ModifiedDate
+        };
+    }
+}
+
+public record WorkOrderDto
+{
+    public int WorkOrderId { get; init; }
+    public int ProductId { get; init; }
+    public int OrderQty { get; init; }
+    public int StockedQty { get; init; }
+    public short ScrappedQty { get; init; }
+    public DateTime StartDate { get; init; }
+    public DateTime? EndDate { get; init; }
+    public DateTime DueDate { get; init; }
+    public short? ScrapReasonId { get; init; }
+    public string? ScrapReasonName { get; init; }
+    public DateTime ModifiedDate { get; init; }
+    public ICollection<WorkOrderRoutingDto> WorkOrderRoutings { get; init; } = [];
+
+    public static WorkOrderDto MapFromEntity(WorkOrder entity)
+    {
+        return new()
+        {
+            WorkOrderId = entity.WorkOrderId,
+            ProductId = entity.ProductId,
+            OrderQty = entity.OrderQty,
+            StockedQty = entity.StockedQty,
+            ScrappedQty = entity.ScrappedQty,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            DueDate = entity.DueDate,
+            ScrapReasonId = entity.ScrapReasonId,
+            ScrapReasonName = entity.ScrapReason?.Name,
+            ModifiedDate = entity.ModifiedDate,
+            WorkOrderRoutings = [.. entity.WorkOrderRoutings.Select(WorkOrderRoutingDto.MapFromEntity)]
+        };
+    }
+}
+
+public record WorkOrderRoutingDto
+{
+    public int WorkOrderId { get; init; }
+    public int ProductId { get; init; }
+    public short OperationSequence { get; init; }
+    public short LocationId { get; init; }
+    public string LocationName { get; init; } = null!;
+    public DateTime ScheduledStartDate { get; init; }
+    public DateTime ScheduledEndDate { get; init; }
+    public DateTime? ActualStartDate { get; init; }
+    public DateTime? ActualEndDate { get; init; }
+    public decimal? ActualResourceHrs { get; init; }
+    public decimal PlannedCost { get; init; }
+    public decimal? ActualCost { get; init; }
+    public DateTime ModifiedDate { get; init; }
+
+    public static WorkOrderRoutingDto MapFromEntity(WorkOrderRouting entity)
+    {
+        return new()
+        {
+            WorkOrderId = entity.WorkOrderId,
+            ProductId = entity.ProductId,
+            OperationSequence = entity.OperationSequence,
+            LocationId = entity.LocationId,
+            LocationName = entity.Location.Name,
+            ScheduledStartDate = entity.ScheduledStartDate,
+            ScheduledEndDate = entity.ScheduledEndDate,
+            ActualStartDate = entity.ActualStartDate,
+            ActualEndDate = entity.ActualEndDate,
+            ActualResourceHrs = entity.ActualResourceHrs,
+            PlannedCost = entity.PlannedCost,
+            ActualCost = entity.ActualCost,
             ModifiedDate = entity.ModifiedDate
         };
     }

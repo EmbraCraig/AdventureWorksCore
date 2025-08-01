@@ -38,6 +38,11 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
                 .ThenInclude(pv => pv.UnitMeasureCodeNavigation)
             .Include(_ => _.PurchaseOrderDetails)
                 .ThenInclude(pod => pod.PurchaseOrder)
+            .Include(_ => _.WorkOrders)
+                .ThenInclude(wo => wo.ScrapReason)
+            .Include(_ => _.WorkOrders)
+                .ThenInclude(wo => wo.WorkOrderRoutings)
+                    .ThenInclude(wor => wor.Location)
             .FirstOrDefaultAsync(_ => _.ProductId == query.ProductId, cancellationToken);
 
         if (entity == null)
