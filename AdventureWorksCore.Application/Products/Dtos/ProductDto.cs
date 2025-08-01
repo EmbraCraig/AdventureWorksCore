@@ -34,6 +34,9 @@ public record ProductDto
     public ICollection<BillOfMaterialDto> BillOfMaterialProductAssemblies { get; init; } = [];
     public ICollection<ProductCostHistoryDto> ProductCostHistories { get; init; } = [];
     public ICollection<ProductInventoryDto> ProductInventories { get; init; } = [];
+    public ICollection<ProductListPriceHistoryDto> ProductListPriceHistories { get; init; } = [];
+    public ICollection<ProductVendorDto> ProductVendors { get; init; } = [];
+    public ICollection<PurchaseOrderDetailDto> PurchaseOrderDetails { get; init; } = [];
 
     public static ProductDto MapFromEntity(Product entity)
     {
@@ -68,7 +71,10 @@ public record ProductDto
             BillOfMaterialComponents = [.. entity.BillOfMaterialComponents.Select(BillOfMaterialDto.MapFromEntity)],
             BillOfMaterialProductAssemblies = [.. entity.BillOfMaterialProductAssemblies.Select(BillOfMaterialDto.MapFromEntity)],
             ProductCostHistories = [.. entity.ProductCostHistories.Select(ProductCostHistoryDto.MapFromEntity)],
-            ProductInventories = [.. entity.ProductInventories.Select(ProductInventoryDto.MapFromEntity)]
+            ProductInventories = [.. entity.ProductInventories.Select(ProductInventoryDto.MapFromEntity)],
+            ProductListPriceHistories = [.. entity.ProductListPriceHistories.Select(ProductListPriceHistoryDto.MapFromEntity)],
+            ProductVendors = [.. entity.ProductVendors.Select(ProductVendorDto.MapFromEntity)],
+            PurchaseOrderDetails = [.. entity.PurchaseOrderDetails.Select(PurchaseOrderDetailDto.MapFromEntity)]
         };
     }
 }
@@ -244,6 +250,163 @@ public record ProductInventoryDto
             Rowguid = entity.Rowguid,
             ModifiedDate = entity.ModifiedDate,
             LocationName = entity.Location.Name
+        };
+    }
+}
+
+public record ProductListPriceHistoryDto
+{
+    public int ProductId { get; init; }
+    public DateTime StartDate { get; init; }
+    public DateTime? EndDate { get; init; }
+    public decimal ListPrice { get; init; }
+    public DateTime ModifiedDate { get; init; }
+
+    public static ProductListPriceHistoryDto MapFromEntity(ProductListPriceHistory entity)
+    {
+        return new()
+        {
+            ProductId = entity.ProductId,
+            StartDate = entity.StartDate,
+            EndDate = entity.EndDate,
+            ListPrice = entity.ListPrice,
+            ModifiedDate = entity.ModifiedDate
+        };
+    }
+}
+
+public record ProductVendorDto
+{
+    public int ProductId { get; init; }
+    public int BusinessEntityId { get; init; }
+    public int AverageLeadTime { get; init; }
+    public decimal StandardPrice { get; init; }
+    public decimal? LastReceiptCost { get; init; }
+    public DateTime? LastReceiptDate { get; init; }
+    public int MinOrderQty { get; init; }
+    public int MaxOrderQty { get; init; }
+    public int? OnOrderQty { get; init; }
+    public string UnitMeasureCode { get; init; } = null!;
+    public string UnitMeasureName { get; init; } = null!;
+    public DateTime ModifiedDate { get; init; }
+    public VendorDto Vendor { get; init; } = null!;
+
+    public static ProductVendorDto MapFromEntity(ProductVendor entity)
+    {
+        return new()
+        {
+            ProductId = entity.ProductId,
+            BusinessEntityId = entity.BusinessEntityId,
+            AverageLeadTime = entity.AverageLeadTime,
+            StandardPrice = entity.StandardPrice,
+            LastReceiptCost = entity.LastReceiptCost,
+            LastReceiptDate = entity.LastReceiptDate,
+            MinOrderQty = entity.MinOrderQty,
+            MaxOrderQty = entity.MaxOrderQty,
+            OnOrderQty = entity.OnOrderQty,
+            UnitMeasureCode = entity.UnitMeasureCode,
+            UnitMeasureName = entity.UnitMeasureCodeNavigation.Name,
+            ModifiedDate = entity.ModifiedDate,
+            Vendor = VendorDto.MapFromEntity(entity.BusinessEntity)
+        };
+    }
+}
+
+public record VendorDto
+{
+    public int BusinessEntityId { get; init; }
+    public string AccountNumber { get; init; } = null!;
+    public string Name { get; init; } = null!;
+    public byte CreditRating { get; init; }
+    public bool PreferredVendorStatus { get; init; }
+    public bool ActiveFlag { get; init; }
+    public string? PurchasingWebServiceUrl { get; init; }
+    public DateTime ModifiedDate { get; init; }
+
+    public static VendorDto MapFromEntity(Vendor entity)
+    {
+        return new()
+        {
+            BusinessEntityId = entity.BusinessEntityId,
+            AccountNumber = entity.AccountNumber,
+            Name = entity.Name,
+            CreditRating = entity.CreditRating,
+            PreferredVendorStatus = entity.PreferredVendorStatus,
+            ActiveFlag = entity.ActiveFlag,
+            PurchasingWebServiceUrl = entity.PurchasingWebServiceUrl,
+            ModifiedDate = entity.ModifiedDate
+        };
+    }
+}
+
+public record PurchaseOrderDetailDto
+{
+    public int PurchaseOrderId { get; init; }
+    public int PurchaseOrderDetailId { get; init; }
+    public DateTime DueDate { get; init; }
+    public short OrderQty { get; init; }
+    public int ProductId { get; init; }
+    public decimal UnitPrice { get; init; }
+    public decimal LineTotal { get; init; }
+    public decimal ReceivedQty { get; init; }
+    public decimal RejectedQty { get; init; }
+    public decimal StockedQty { get; init; }
+    public DateTime ModifiedDate { get; init; }
+    public PurchaseOrderHeaderDto PurchaseOrder { get; init; } = null!;
+
+    public static PurchaseOrderDetailDto MapFromEntity(PurchaseOrderDetail entity)
+    {
+        return new()
+        {
+            PurchaseOrderId = entity.PurchaseOrderId,
+            PurchaseOrderDetailId = entity.PurchaseOrderDetailId,
+            DueDate = entity.DueDate,
+            OrderQty = entity.OrderQty,
+            ProductId = entity.ProductId,
+            UnitPrice = entity.UnitPrice,
+            LineTotal = entity.LineTotal,
+            ReceivedQty = entity.ReceivedQty,
+            RejectedQty = entity.RejectedQty,
+            StockedQty = entity.StockedQty,
+            ModifiedDate = entity.ModifiedDate,
+            PurchaseOrder = PurchaseOrderHeaderDto.MapFromEntity(entity.PurchaseOrder)
+        };
+    }
+}
+
+public record PurchaseOrderHeaderDto
+{
+    public int PurchaseOrderId { get; init; }
+    public byte RevisionNumber { get; init; }
+    public byte Status { get; init; }
+    public int EmployeeId { get; init; }
+    public int VendorId { get; init; }
+    public int ShipMethodId { get; init; }
+    public DateTime OrderDate { get; init; }
+    public DateTime? ShipDate { get; init; }
+    public decimal SubTotal { get; init; }
+    public decimal TaxAmt { get; init; }
+    public decimal Freight { get; init; }
+    public decimal TotalDue { get; init; }
+    public DateTime ModifiedDate { get; init; }
+
+    public static PurchaseOrderHeaderDto MapFromEntity(PurchaseOrderHeader entity)
+    {
+        return new()
+        {
+            PurchaseOrderId = entity.PurchaseOrderId,
+            RevisionNumber = entity.RevisionNumber,
+            Status = entity.Status,
+            EmployeeId = entity.EmployeeId,
+            VendorId = entity.VendorId,
+            ShipMethodId = entity.ShipMethodId,
+            OrderDate = entity.OrderDate,
+            ShipDate = entity.ShipDate,
+            SubTotal = entity.SubTotal,
+            TaxAmt = entity.TaxAmt,
+            Freight = entity.Freight,
+            TotalDue = entity.TotalDue,
+            ModifiedDate = entity.ModifiedDate
         };
     }
 }

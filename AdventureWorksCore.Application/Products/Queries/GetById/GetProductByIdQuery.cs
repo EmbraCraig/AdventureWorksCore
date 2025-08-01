@@ -31,6 +31,13 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
             .Include(_ => _.BillOfMaterialProductAssemblies)
             .Include(_ => _.ProductCostHistories)
             .Include(_ => _.ProductInventories)
+            .Include(_ => _.ProductListPriceHistories)
+            .Include(_ => _.ProductVendors)
+                .ThenInclude(pv => pv.BusinessEntity)
+            .Include(_ => _.ProductVendors)
+                .ThenInclude(pv => pv.UnitMeasureCodeNavigation)
+            .Include(_ => _.PurchaseOrderDetails)
+                .ThenInclude(pod => pod.PurchaseOrder)
             .FirstOrDefaultAsync(_ => _.ProductId == query.ProductId, cancellationToken);
 
         if (entity == null)
