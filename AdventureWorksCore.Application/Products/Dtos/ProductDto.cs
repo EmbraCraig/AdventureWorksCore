@@ -33,6 +33,7 @@ public record ProductDto
     public ICollection<BillOfMaterialDto> BillOfMaterialComponents { get; init; } = [];
     public ICollection<BillOfMaterialDto> BillOfMaterialProductAssemblies { get; init; } = [];
     public ICollection<ProductCostHistoryDto> ProductCostHistories { get; init; } = [];
+    public ICollection<ProductInventoryDto> ProductInventories { get; init; } = [];
 
     public static ProductDto MapFromEntity(Product entity)
     {
@@ -66,7 +67,8 @@ public record ProductDto
             ProductPhotos = [.. entity.ProductProductPhotos.Select(ppp => ProductPhotoDto.MapFromEntity(ppp.ProductPhoto))],
             BillOfMaterialComponents = [.. entity.BillOfMaterialComponents.Select(BillOfMaterialDto.MapFromEntity)],
             BillOfMaterialProductAssemblies = [.. entity.BillOfMaterialProductAssemblies.Select(BillOfMaterialDto.MapFromEntity)],
-            ProductCostHistories = [.. entity.ProductCostHistories.Select(ProductCostHistoryDto.MapFromEntity)]
+            ProductCostHistories = [.. entity.ProductCostHistories.Select(ProductCostHistoryDto.MapFromEntity)],
+            ProductInventories = [.. entity.ProductInventories.Select(ProductInventoryDto.MapFromEntity)]
         };
     }
 }
@@ -215,6 +217,33 @@ public record ProductCostHistoryDto
             EndDate = entity.EndDate,
             StandardCost = entity.StandardCost,
             ModifiedDate = entity.ModifiedDate
+        };
+    }
+}
+
+public record ProductInventoryDto
+{
+    public int ProductId { get; init; }
+    public short LocationId { get; init; }
+    public string Shelf { get; init; } = null!;
+    public byte Bin { get; init; }
+    public short Quantity { get; init; }
+    public Guid Rowguid { get; init; }
+    public DateTime ModifiedDate { get; init; }
+    public string LocationName { get; init; } = null!;
+
+    public static ProductInventoryDto MapFromEntity(ProductInventory entity)
+    {
+        return new()
+        {
+            ProductId = entity.ProductId,
+            LocationId = entity.LocationId,
+            Shelf = entity.Shelf,
+            Bin = entity.Bin,
+            Quantity = entity.Quantity,
+            Rowguid = entity.Rowguid,
+            ModifiedDate = entity.ModifiedDate,
+            LocationName = entity.Location.Name
         };
     }
 }

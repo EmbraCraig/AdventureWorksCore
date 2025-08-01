@@ -30,6 +30,7 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
             .Include(_ => _.BillOfMaterialComponents)
             .Include(_ => _.BillOfMaterialProductAssemblies)
             .Include(_ => _.ProductCostHistories)
+            .Include(_ => _.ProductInventories)
             .FirstOrDefaultAsync(_ => _.ProductId == query.ProductId, cancellationToken);
 
         if (entity == null)
