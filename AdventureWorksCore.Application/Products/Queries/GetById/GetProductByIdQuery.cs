@@ -27,10 +27,11 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
             .Include(_ => _.ProductModel)
             .Include(_ => _.ProductSubcategory)
             .Include(_ => _.ProductReviews)
-            .Include(_ => _.BillOfMaterialComponents).ThenInclude(bom => bom.Component)
-            .Include(_ => _.BillOfMaterialProductAssemblies).ThenInclude(bom => bom.Component)
+            .Include(_ => _.BillOfMaterialComponents)
+            .Include(_ => _.BillOfMaterialProductAssemblies)
             .Include(_ => _.ProductCostHistories)
             .Include(_ => _.ProductInventories)
+                .ThenInclude(pi => pi.Location)
             .Include(_ => _.ProductListPriceHistories)
             .Include(_ => _.ProductVendors)
                 .ThenInclude(pv => pv.BusinessEntity)
@@ -43,6 +44,7 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
             .Include(_ => _.WorkOrders)
                 .ThenInclude(wo => wo.WorkOrderRoutings)
                     .ThenInclude(wor => wor.Location)
+            .Include(x => x.ProductProductPhotos).ThenInclude(ppp => ppp.ProductPhoto)
             .FirstOrDefaultAsync(_ => _.ProductId == query.ProductId, cancellationToken);
 
         if (entity == null)
