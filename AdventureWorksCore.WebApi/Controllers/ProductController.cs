@@ -25,7 +25,7 @@ public class ProductController : ControllerBase
         return appResponse.ToActionResult();
     }
 
-    [HttpGet("api/products")]
+    [HttpGet("api/v1/products")]
     public async Task<ActionResult<AppResponse<PaginatedListResponse<ProductDto>>>> ListProducts(
         [FromQuery] ListProductsQuery query,
         [FromServices] ListProductsQueryHandler handler,
@@ -36,13 +36,35 @@ public class ProductController : ControllerBase
         return appResponse.ToActionResult();
     }
 
-    [HttpGet("api/products/{productId}")]
+    [HttpGet("api/v2/products")]
+    public async Task<ActionResult<AppResponse<PaginatedListResponse<ProductDto>>>> ListProductsV2(
+    [FromQuery] ListProductsQuery query,
+    [FromServices] ListProductsQueryHandler handler,
+    CancellationToken cancellationToken)
+    {
+        var appResponse = await handler.HandleV2(query, cancellationToken);
+
+        return appResponse.ToActionResult();
+    }
+
+    [HttpGet("api/v1/products/{productId}")]
     public async Task<ActionResult<AppResponse<ProductDto>>> GetProductById(
         [FromRoute] int productId,
         [FromServices] GetProductByIdQueryHandler handler,
         CancellationToken cancellationToken)
     {
         var appResponse = await handler.Handle(new() { ProductId = productId }, cancellationToken);
+
+        return appResponse.ToActionResult();
+    }
+
+    [HttpGet("api/v2/products/{productId}")]
+    public async Task<ActionResult<AppResponse<ProductDto>>> GetProductByIdV2(
+        [FromRoute] int productId,
+        [FromServices] GetProductByIdQueryHandler handler,
+        CancellationToken cancellationToken)
+    {
+        var appResponse = await handler.HandleV2(new() { ProductId = productId }, cancellationToken);
 
         return appResponse.ToActionResult();
     }

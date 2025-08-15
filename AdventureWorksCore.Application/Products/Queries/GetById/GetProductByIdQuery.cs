@@ -1,5 +1,6 @@
 using AdventureWorksCore.Application.Common.AppRequests;
 using AdventureWorksCore.Application.Common.Interfaces;
+using AdventureWorksCore.Application.Products.Queries;
 using AdventureWorksCore.Application.Projects.Dtos;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,5 +54,22 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
         }
 
         return new(200, ProductDto.MapFromEntity(entity));
+    }
+
+    public async Task<AppResponse<ProductDto>> HandleV2(
+        GetProductByIdQuery query,
+        CancellationToken cancellationToken)
+    {
+        var dto = await _dbContext.Products
+            .Where(_ => _.ProductId == query.ProductId)
+            .ProjectToDto()
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (dto == null)
+        {
+            return new(404);
+        }
+
+        return new(200, dto);
     }
 }

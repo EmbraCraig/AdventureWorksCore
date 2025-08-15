@@ -1,6 +1,7 @@
 using AdventureWorksCore.Application.Common.AppRequests;
 using AdventureWorksCore.Application.Common.AppRequests.Pagination;
 using AdventureWorksCore.Application.Common.Interfaces;
+using AdventureWorksCore.Application.Products.Queries;
 using AdventureWorksCore.Application.Projects.Dtos;
 using AdventureWorksCore.Models;
 using Microsoft.EntityFrameworkCore;
@@ -43,9 +44,7 @@ public class ListProductsQueryHandler : IRequestHandler<ListProductsQuery, Pagin
             .Include(x => x.ProductSubcategory)
             .Include(x => x.ProductReviews)
             .Include(_ => _.BillOfMaterialComponents)
-                .ThenInclude(bom => bom.Component)
             .Include(_ => _.BillOfMaterialProductAssemblies)
-                .ThenInclude(bom => bom.Component)
             .Include(x => x.ProductCostHistories)
             .Include(x => x.ProductInventories)
                 .ThenInclude(pi => pi.Location)
@@ -64,5 +63,17 @@ public class ListProductsQueryHandler : IRequestHandler<ListProductsQuery, Pagin
             .Include(x => x.ProductProductPhotos).ThenInclude(ppp => ppp.ProductPhoto);
 
         return queryable;
+    }
+
+    public async Task<AppResponse<PaginatedListResponse<ProductDto>>> HandleV2(
+        ListProductsQuery query,
+        CancellationToken cancellationToken)
+    {
+        var result = await PaginatedListResponse<ProductDto>.Create<ProductDto>(
+            _dbContext.Products.ProjectToDto().OrderBy(_ => _.Id),
+            query,
+            cancellationToken);
+
+        return new(200, result);
     }
 }
