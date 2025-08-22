@@ -1,4 +1,5 @@
 ﻿using AdventureWorksCore.Application.Projects.Dtos;
+using AdventureWorksCore.Application.Products.Dtos;
 using AdventureWorksCore.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -209,5 +210,30 @@ public static class QueryableExtensions
             })
             .ToList()
         }).AsSplitQuery();
+    }
+
+    /// <summary>
+    /// Simplified projection for demonstrating Include vs Projection performance
+    /// Only selects needed columns from related tables using projection
+    /// </summary>
+    public static IQueryable<ProductSummaryDto> ProjectToSummaryDto(this IQueryable<Product> queryable)
+    {
+        return queryable.Select(entity => new ProductSummaryDto
+        {
+            Id = entity.ProductId,
+            Name = entity.Name,
+            ProductNumber = entity.ProductNumber,
+            StandardCost = entity.StandardCost,
+            ListPrice = entity.ListPrice,
+            // Projection only selects needed columns from related tables
+            ProductModelName = entity.ProductModel != null ? entity.ProductModel.Name : null,
+            SubcategoryName = entity.ProductSubcategory != null ? entity.ProductSubcategory.Name : null,
+            CategoryName = entity.ProductSubcategory != null && entity.ProductSubcategory.ProductCategory != null 
+                ? entity.ProductSubcategory.ProductCategory.Name : null,
+            SizeUnitMeasureName = entity.SizeUnitMeasureCodeNavigation != null 
+                ? entity.SizeUnitMeasureCodeNavigation.Name : null,
+            WeightUnitMeasureName = entity.WeightUnitMeasureCodeNavigation != null 
+                ? entity.WeightUnitMeasureCodeNavigation.Name : null
+        });
     }
 }
